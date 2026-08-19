@@ -7,217 +7,40 @@
 
 <style>
 *{box-sizing:border-box}
-
-body{
-margin:0;
-font-family:Arial,sans-serif;
-background:#f6f7f8;
-color:#172018
-}
-
-header{
-height:62px;
-background:#fff;
-border-bottom:1px solid #ddd;
-display:flex;
-align-items:center;
-padding:0 18px;
-position:sticky;
-top:0;
-z-index:5
-}
-
-.brand{
-font-size:25px;
-font-weight:800
-}
-
-main{
-max-width:1000px;
-margin:auto;
-padding:20px
-}
-
-.hero{
-background:#fff;
-border-radius:16px;
-padding:28px;
-margin-bottom:25px;
-box-shadow:0 2px 10px #0000000d
-}
-
-.hero h1{
-margin:0 0 6px;
-font-size:34px
-}
-
-.grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(190px,1fr));
-gap:16px
-}
-
-.card{
-background:#fff;
-border-radius:16px;
-padding:12px;
-box-shadow:0 2px 10px #0000000d
-}
-
-.card img{
-width:100%;
-aspect-ratio:4/3;
-object-fit:cover;
-border-radius:12px
-}
-
-.card h3{
-margin:10px 0 5px
-}
-
-.card p{
-color:#666
-}
-
-.card strong{
-display:block;
-font-size:20px;
-margin:10px 0
-}
-
-button{
-border:1px solid #ccc;
-background:#fff;
-border-radius:8px;
-padding:8px 10px;
-cursor:pointer
-}
-
-.primary{
-background:#111;
-color:#fff;
-border:0;
-border-radius:10px;
-padding:11px 15px;
-font-weight:700;
-cursor:pointer;
-width:100%
-}
-
-.cart-btn{
-position:fixed;
-right:18px;
-bottom:18px;
-background:#111;
-color:#fff;
-border:0;
-border-radius:30px;
-padding:13px 18px;
-z-index:10
-}
-
-.cart{
-position:fixed;
-right:-380px;
-top:0;
-width:min(360px,92vw);
-height:100vh;
-background:#fff;
-z-index:20;
-padding:18px;
-box-shadow:-5px 0 20px #0002;
-transition:.2s
-}
-
-.cart.open{
-right:0
-}
-
-.cart-head{
-display:flex;
-justify-content:space-between;
-align-items:center
-}
-
-.cart-item{
-display:flex;
-justify-content:space-between;
-gap:10px;
-padding:12px 0;
-border-bottom:1px solid #eee
-}
-
-.total{
-font-size:20px;
-font-weight:800;
-margin:20px 0
-}
-
-.modal{
-display:none;
-position:fixed;
-inset:0;
-background:#0008;
-z-index:30;
-align-items:center;
-justify-content:center;
-padding:18px
-}
-
-.modal.show{
-display:flex
-}
-
-.modal-box{
-background:#fff;
-border-radius:16px;
-padding:20px;
-width:min(450px,100%);
-position:relative
-}
-
-.close{
-position:absolute;
-right:12px;
-top:12px
-}
-
-input,
-textarea{
-width:100%;
-padding:12px;
-border:1px solid #ccc;
-border-radius:9px;
-margin:6px 0;
-font:inherit
-}
-
-textarea{
-min-height:90px
-}
-
+body{margin:0;font-family:Arial,sans-serif;background:#f6f7f8;color:#172018}
+header{height:62px;background:#fff;border-bottom:1px solid #ddd;display:flex;align-items:center;padding:0 18px;position:sticky;top:0;z-index:5}
+.brand{font-size:25px;font-weight:800}
+main{max-width:1000px;margin:auto;padding:20px}
+.hero,.card{background:#fff;border-radius:16px;padding:16px;box-shadow:0 2px 10px #0000000d}
+.hero{padding:28px;margin-bottom:25px}
+.hero h1{margin:0 0 6px;font-size:34px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:16px}
+.card img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:12px}
+.card h3{margin:10px 0 5px}
+.card p{color:#666}
+.card strong{display:block;font-size:20px;margin:10px 0}
+button{border:1px solid #ccc;background:#fff;border-radius:8px;padding:10px;cursor:pointer}
+.primary{background:#111;color:#fff;border:0;border-radius:10px;padding:12px;font-weight:700;width:100%}
+.cart-btn{position:fixed;right:18px;bottom:18px;background:#111;color:#fff;border:0;border-radius:30px;padding:13px 18px;z-index:10}
+.cart{position:fixed;right:-380px;top:0;width:min(360px,92vw);height:100vh;background:#fff;z-index:20;padding:18px;box-shadow:-5px 0 20px #0002;transition:.2s}
+.cart.open{right:0}
+.cart-head{display:flex;justify-content:space-between;align-items:center}
+.cart-item{display:flex;justify-content:space-between;gap:10px;padding:12px 0;border-bottom:1px solid #eee}
+.total{font-size:20px;font-weight:800;margin:20px 0}
+.modal{display:none;position:fixed;inset:0;background:#0008;z-index:30;align-items:center;justify-content:center;padding:18px}
+.modal.show{display:flex}
+.modal-box{background:#fff;border-radius:16px;padding:20px;width:min(450px,100%);position:relative}
+.close{position:absolute;right:12px;top:12px}
+input,textarea{width:100%;padding:12px;border:1px solid #ccc;border-radius:9px;margin:6px 0;font:inherit}
+textarea{min-height:90px}
+.location-btn{width:100%;margin:6px 0}
+#locationStatus{font-size:14px}
 @media(max-width:500px){
-
-main{
-padding:12px
-}
-
-.grid{
-grid-template-columns:1fr 1fr
-}
-
-.card{
-padding:10px
-}
-
-.card h3{
-font-size:16px
-}
-
-.card strong{
-font-size:17px
-}
-
+main{padding:12px}
+.grid{grid-template-columns:1fr 1fr}
+.card{padding:10px}
+.card h3{font-size:16px}
+.card strong{font-size:17px}
 }
 </style>
 </head>
@@ -228,23 +51,18 @@ font-size:17px
 <div class="brand">Freshy</div>
 </header>
 
-
 <main>
 
 <section class="hero">
-
 <h1>Freshy</h1>
-
-<p>
-Simple shopping with Cash on Delivery.
-</p>
-
+<p>Simple shopping with Cash on Delivery.</p>
 </section>
-
 
 <h2>Products</h2>
 
-<div id="products" class="grid"></div>
+<div id="products" class="grid">
+<p>Loading products...</p>
+</div>
 
 </main>
 
@@ -254,45 +72,25 @@ Simple shopping with Cash on Delivery.
 <div id="cart" class="cart">
 
 <div class="cart-head">
-
 <b>Your Cart</b>
-
-<button onclick="toggleCart()">
-×
-</button>
-
+<button onclick="toggleCart()">×</button>
 </div>
-
 
 <div id="cartItems"></div>
 
-
 <div class="total">
-
 Total: ₹<span id="total">0</span>
-
 </div>
 
-
-<button
-class="primary"
-onclick="openCheckout()"
->
+<button class="primary" onclick="openCheckout()">
 Checkout — COD
 </button>
 
 </div>
 
 
-<button
-class="cart-btn"
-onclick="toggleCart()"
->
-
-🛒 Cart
-
-<span id="count">0</span>
-
+<button class="cart-btn" onclick="toggleCart()">
+🛒 Cart <span id="count">0</span>
 </button>
 
 
@@ -302,18 +100,9 @@ onclick="toggleCart()"
 
 <div class="modal-box">
 
-<button
-class="close"
-onclick="closeCheckout()"
->
-×
-</button>
+<button class="close" onclick="closeCheckout()">×</button>
 
-
-<h2>
-Cash on Delivery
-</h2>
-
+<h2>Cash on Delivery</h2>
 
 <form id="orderForm">
 
@@ -323,19 +112,32 @@ placeholder="Your name"
 required
 >
 
-
 <input
 id="phone"
 placeholder="Phone number"
+type="tel"
 required
 >
-
 
 <textarea
 id="address"
 placeholder="Full delivery address"
 required
 ></textarea>
+
+
+<button
+type="button"
+class="location-btn"
+onclick="getLocation()"
+>
+📍 Use my current location
+</button>
+
+<p id="locationStatus"></p>
+
+<input type="hidden" id="latitude">
+<input type="hidden" id="longitude">
 
 
 <button
@@ -347,11 +149,9 @@ Place COD Order
 
 </form>
 
-
 <p id="orderMsg"></p>
 
 </div>
-
 </div>
 
 
@@ -359,30 +159,31 @@ Place COD Order
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-
 <script>
 
 const SUPABASE_URL =
 "https://jleeiaktplcsjpgmzopm.supabase.co";
 
-
-const SUPABASE_PUBLISHABLE_KEY =
+const SUPABASE_KEY =
 "sb_publishable_XGiJfYclvwJALSxtb-knpQ_QfUasbhv";
-
 
 const db =
 supabase.createClient(
 SUPABASE_URL,
-SUPABASE_PUBLISHABLE_KEY
+SUPABASE_KEY
 );
 
 
-let products = [];
+let products=[];
 
-let cart =
+let cart=
 JSON.parse(
 localStorage.getItem("freshyCart") || "[]"
 );
+
+
+const $=id =>
+document.getElementById(id);
 
 
 function escapeHTML(value){
@@ -391,13 +192,11 @@ return String(value ?? "")
 .replace(/[&<>"']/g,function(m){
 
 return {
-
 "&":"&amp;",
 "<":"&lt;",
 ">":"&gt;",
 '"':"&quot;",
 "'":"&#039;"
-
 }[m];
 
 });
@@ -417,50 +216,42 @@ JSON.stringify(cart)
 
 function renderCart(){
 
-document.getElementById("count").textContent =
+$("count").textContent=
 cart.reduce(
-(total,item) =>
-total + item.qty,
+(a,x)=>a+x.qty,
 0
 );
 
 
-document.getElementById("total").textContent =
+$("total").textContent=
 cart.reduce(
-(total,item) =>
-total + item.qty * item.price,
+(a,x)=>a+x.qty*x.price,
 0
 ).toFixed(2);
 
 
-document.getElementById("cartItems").innerHTML =
-
-cart.map(function(item,index){
-
-return `
+$("cartItems").innerHTML=
+cart.map(
+(x,i)=>`
 
 <div class="cart-item">
 
 <span>
-
-${escapeHTML(item.name)}
-
+${escapeHTML(x.name)}
 <br>
-
-₹${item.price} × ${item.qty}
-
+₹${x.price} × ${x.qty}
 </span>
 
 <span>
 
 <button
-onclick="changeQty(${index},-1)"
+onclick="changeQty(${i},-1)"
 >
 −
 </button>
 
 <button
-onclick="changeQty(${index},1)"
+onclick="changeQty(${i},1)"
 >
 +
 </button>
@@ -469,28 +260,21 @@ onclick="changeQty(${index},1)"
 
 </div>
 
-`;
-
-}).join("")
-
+`
+).join("")
 ||
-
 "<p>Your cart is empty.</p>";
 
 }
 
 
-function changeQty(index,difference){
+function changeQty(i,d){
 
-cart[index].qty += difference;
+cart[i].qty+=d;
 
-
-if(cart[index].qty <= 0){
-
-cart.splice(index,1);
-
+if(cart[i].qty<=0){
+cart.splice(i,1);
 }
-
 
 saveCart();
 
@@ -501,37 +285,28 @@ renderCart();
 
 function toggleCart(force){
 
-document
-.getElementById("cart")
-.classList
-.toggle(
-"open",
-force === true
-? true
-: undefined
-);
+if(force===true){
+$("cart").classList.add("open");
+}else{
+$("cart").classList.toggle("open");
+}
 
 }
 
 
 function addToCart(id){
 
-const product =
+const product=
 products.find(
-item => item.id === id
+x=>x.id===id
 );
 
-
-if(!product){
-
-return;
-
-}
+if(!product)return;
 
 
-const existing =
+const existing=
 cart.find(
-item => item.id === id
+x=>x.id===id
 );
 
 
@@ -567,82 +342,73 @@ toggleCart(true);
 
 async function loadProducts(){
 
-const result =
+const result=
 await db
 .from("products")
 .select("*")
 .eq("active",true)
 .order(
 "created_at",
-{
-ascending:false
-}
+{ascending:false}
 );
 
 
 if(result.error){
 
-document.getElementById(
-"products"
-).textContent =
-result.error.message;
+$("products").innerHTML=
+"<p>Unable to load products.</p>";
+
+console.error(result.error);
 
 return;
 
 }
 
 
-products =
+products=
 result.data || [];
 
 
-document.getElementById(
-"products"
-).innerHTML =
-
-products.map(function(product){
-
-return `
+$("products").innerHTML=
+products.map(
+p=>`
 
 <article class="card">
 
 <img
 src="${
-product.image_url ||
+p.image_url ||
 "https://placehold.co/600x400?text=Freshy"
 }"
 alt=""
 >
 
 <h3>
-${escapeHTML(product.name)}
+${escapeHTML(p.name)}
 </h3>
 
 <p>
 ${escapeHTML(
-product.description || ""
+p.description || ""
 )}
 </p>
 
 <strong>
-₹${Number(product.price).toFixed(2)}
+₹${Number(p.price).toFixed(2)}
 </strong>
 
 <button
 class="primary"
-onclick="addToCart('${product.id}')"
+onclick="addToCart('${p.id}')"
 >
 Add to Cart
 </button>
 
 </article>
 
-`;
-
-}).join("")
-
+`
+).join("")
 ||
-
 "<p>No products available.</p>";
 
 }
@@ -660,9 +426,7 @@ return;
 
 }
 
-
-document
-.getElementById("checkout")
+$("checkout")
 .classList
 .add("show");
 
@@ -671,58 +435,128 @@ document
 
 function closeCheckout(){
 
-document
-.getElementById("checkout")
+$("checkout")
 .classList
 .remove("show");
 
 }
 
 
-document
-.getElementById("orderForm")
-.addEventListener(
-"submit",
-async function(event){
+/* GET CUSTOMER LOCATION */
 
-event.preventDefault();
+function getLocation(){
+
+if(!navigator.geolocation){
+
+$("locationStatus").textContent=
+"Location is not supported by this browser.";
+
+return;
+
+}
 
 
-const total =
+$("locationStatus").textContent=
+"📍 Getting your location...";
+
+
+navigator.geolocation.getCurrentPosition(
+
+function(position){
+
+$("latitude").value=
+position.coords.latitude;
+
+$("longitude").value=
+position.coords.longitude;
+
+
+$("locationStatus").textContent=
+"✅ Location captured successfully.";
+
+},
+
+function(error){
+
+$("locationStatus").textContent=
+"❌ Location permission was denied or unavailable.";
+
+},
+
+{
+enableHighAccuracy:true,
+timeout:15000,
+maximumAge:0
+}
+
+);
+
+}
+
+
+/* PLACE ORDER */
+
+$("orderForm").onsubmit=
+async function(e){
+
+e.preventDefault();
+
+
+const latitude=
+$("latitude").value;
+
+const longitude=
+$("longitude").value;
+
+
+if(!latitude || !longitude){
+
+alert(
+"Please tap 'Use my current location' first."
+);
+
+return;
+
+}
+
+
+const total=
 cart.reduce(
-(sum,item) =>
-sum + item.qty * item.price,
+(a,x)=>a+x.qty*x.price,
 0
 );
 
 
-const order = {
+const order={
 
 customer_name:
-document.getElementById(
-"customerName"
-).value.trim(),
+$("customerName").value.trim(),
 
 phone:
-document.getElementById(
-"phone"
-).value.trim(),
+$("phone").value.trim(),
 
 address:
-document.getElementById(
-"address"
-).value.trim(),
+$("address").value.trim(),
 
-items:cart,
+latitude:
+Number(latitude),
 
-total:total,
+longitude:
+Number(longitude),
 
-status:"Pending"
+items:
+cart,
+
+total:
+total,
+
+status:
+"Pending"
 
 };
 
 
-const result =
+const result=
 await db
 .from("orders")
 .insert(order);
@@ -730,10 +564,8 @@ await db
 
 if(result.error){
 
-document.getElementById(
-"orderMsg"
-).textContent =
-"Order failed: " +
+$("orderMsg").textContent=
+"Order failed: "+
 result.error.message;
 
 return;
@@ -741,22 +573,28 @@ return;
 }
 
 
-document.getElementById(
-"orderMsg"
-).textContent =
-"Order placed successfully!";
+$("orderMsg").textContent=
+"✅ Order placed successfully!";
 
 
-cart = [];
+cart=[];
 
 saveCart();
 
 renderCart();
 
-event.target.reset();
+$("latitude").value="";
 
-});
+$("longitude").value="";
 
+$("locationStatus").textContent="";
+
+e.target.reset();
+
+};
+
+
+/* START */
 
 renderCart();
 

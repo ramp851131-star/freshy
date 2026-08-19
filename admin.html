@@ -1,18 +1,569 @@
 <!doctype html>
 <html lang="en">
-<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Freshy Admin</title><link rel="stylesheet" href="style.css"></head>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Freshy Admin</title>
+
+<style>
+body{
+  font-family:Arial,sans-serif;
+  max-width:900px;
+  margin:auto;
+  padding:20px;
+  background:#f6f7f8;
+}
+
+.panel{
+  background:#fff;
+  padding:20px;
+  margin-bottom:20px;
+  border-radius:14px;
+}
+
+input,textarea,button{
+  font:inherit;
+  padding:10px;
+  margin:5px 0;
+}
+
+input,textarea{
+  width:100%;
+  box-sizing:border-box;
+}
+
+button{
+  border:0;
+  border-radius:8px;
+  cursor:pointer;
+}
+
+.primary{
+  background:#111;
+  color:#fff;
+  width:100%;
+}
+
+.item{
+  border:1px solid #ddd;
+  padding:12px;
+  margin:8px 0;
+  border-radius:10px;
+}
+</style>
+</head>
+
 <body>
-<header><div class="brand">Freshy Admin</div><a href="index.html" class="admin-link">Store</a></header>
-<main>
-<div id="loginBox" class="panel">
+
+<h1>Freshy Admin</h1>
+
+<div id="login" class="panel">
+
 <h2>Admin Login</h2>
-<form id="loginForm"><input id="email" type="email" placeholder="Admin email" required><input id="password" type="password" placeholder="Password" required><button class="primary">Login</button></form>
-<p id="loginMsg"></p></div>
-<div id="adminApp" hidden>
-<div class="panel"><div class="row"><h2>Products</h2><button onclick="logout()">Logout</button></div>
-<form id="productForm" class="product-form"><input id="pname" placeholder="Product name" required><input id="pprice" type="number" step="0.01" placeholder="Price ₹" required><input id="pimage" placeholder="Image URL (optional)"><textarea id="pdesc" placeholder="Description"></textarea><button class="primary">Add Product</button></form>
-<div id="productAdmin"></div></div>
-<div class="panel"><h2>Orders</h2><div id="orders"></div></div>
-</div></main>
-<script src="config.js"></script><script src="admin.js"></script>
-</body></html>
+
+<form id="loginForm">
+
+<input
+id="email"
+type="email"
+placeholder="Admin email"
+required
+>
+
+<input
+id="password"
+type="password"
+placeholder="Password"
+required
+>
+
+<button class="primary" type="submit">
+Login
+</button>
+
+</form>
+
+<p id="message"></p>
+
+</div>
+
+
+<div id="dashboard" hidden>
+
+<div class="panel">
+
+<button onclick="logout()">Logout</button>
+
+<h2>Products</h2>
+
+<form id="productForm">
+
+<input
+id="name"
+placeholder="Product name"
+required
+>
+
+<input
+id="price"
+type="number"
+step="0.01"
+placeholder="Price ₹"
+required
+>
+
+<input
+id="image"
+placeholder="Image URL (optional)"
+>
+
+<textarea
+id="description"
+placeholder="Description"
+></textarea>
+
+<button
+class="primary"
+type="submit"
+>
+Add Product
+</button>
+
+</form>
+
+<div id="products"></div>
+
+</div>
+
+
+<div class="panel">
+
+<h2>Customer Orders</h2>
+
+<div id="orders"></div>
+
+</div>
+
+</div>
+
+
+<!-- SUPABASE -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+
+const db = supabase.createClient(
+
+"https://jleeiaktplcsjpgmzopm.supabase.co",
+
+"sb_publishable_XGiJfYclvwJALSxtb-knpQ_QfUasbhv"
+
+);
+
+
+const $ = id => document.getElementById(id);
+
+let editId = null;
+
+
+function esc(v){
+
+return String(v ?? "").replace(
+/[&<>"']/g,
+
+m => ({
+"&":"&amp;",
+"<":"&lt;",
+">":"&gt;",
+'"':"&quot;",
+"'":"&#039;"
+}[m])
+);
+
+}
+
+
+async function checkLogin(){
+
+const {data} = await db.auth.getSession();
+
+if(data.session){
+
+showDashboard();
+
+}
+
+}
+
+
+function showDashboard(){
+
+$("login").hidden = true;
+
+$("dashboard").hidden = false;
+
+loadProducts();
+
+loadOrders();
+
+}
+
+
+$("loginForm").addEventListener(
+"submit",
+async e => {
+
+e.preventDefault();
+
+$("message").textContent =
+"Logging in...";
+
+
+const {error} =
+await db.auth.signInWithPassword({
+
+email:
+$("email").value.trim(),
+
+password:
+$("password").value
+
+});
+
+
+if(error){
+
+$("message").textContent =
+error.message;
+
+return;
+
+}
+
+
+$("message").textContent =
+"Login successful";
+
+showDashboard();
+
+});
+
+
+async function logout(){
+
+await db.auth.signOut();
+
+location.reload();
+
+}
+
+
+$("productForm").addEventListener(
+"submit",
+async e => {
+
+e.preventDefault();
+
+
+const product = {
+
+name:
+$("name").value.trim(),
+
+price:
+Number($("price").value),
+
+image_url:
+$("image").value.trim() || null,
+
+description:
+$("description").value.trim(),
+
+active:true
+
+};
+
+
+let result;
+
+
+if(editId){
+
+result =
+await db
+.from("products")
+.update(product)
+.eq("id",editId);
+
+}else{
+
+result =
+await db
+.from("products")
+.insert(product);
+
+}
+
+
+if(result.error){
+
+alert(result.error.message);
+
+return;
+
+}
+
+
+editId = null;
+
+e.target.reset();
+
+e.target.querySelector("button")
+.textContent = "Add Product";
+
+loadProducts();
+
+});
+
+
+async function loadProducts(){
+
+const {data,error} =
+await db
+.from("products")
+.select("*")
+.order("created_at",
+{ascending:false});
+
+
+if(error){
+
+$("products").textContent =
+error.message;
+
+return;
+
+}
+
+
+$("products").innerHTML =
+(data || []).map(p => `
+
+<div class="item">
+
+<b>${esc(p.name)}</b>
+—
+₹${Number(p.price).toFixed(2)}
+
+<br>
+
+<small>
+${p.active ? "Visible" : "Hidden"}
+</small>
+
+<br>
+
+<button
+onclick='editProduct(${JSON.stringify(p)})'
+>
+Edit
+</button>
+
+<button
+onclick="toggleProduct('${p.id}',${!p.active})"
+>
+${p.active ? "Hide" : "Show"}
+</button>
+
+<button
+onclick="deleteProduct('${p.id}')"
+>
+Delete
+</button>
+
+</div>
+
+`).join("")
+||
+"<p>No products yet.</p>";
+
+}
+
+
+function editProduct(p){
+
+editId = p.id;
+
+$("name").value =
+p.name;
+
+$("price").value =
+p.price;
+
+$("image").value =
+p.image_url || "";
+
+$("description").value =
+p.description || "";
+
+$("productForm")
+.querySelector("button")
+.textContent =
+"Save Product";
+
+window.scrollTo(0,0);
+
+}
+
+
+async function toggleProduct(id,value){
+
+const {error} =
+await db
+.from("products")
+.update({active:value})
+.eq("id",id);
+
+if(error){
+
+alert(error.message);
+
+}
+
+loadProducts();
+
+}
+
+
+async function deleteProduct(id){
+
+if(!confirm(
+"Delete this product?"
+)) return;
+
+
+const {error} =
+await db
+.from("products")
+.delete()
+.eq("id",id);
+
+
+if(error){
+
+alert(error.message);
+
+}
+
+
+loadProducts();
+
+}
+
+
+async function loadOrders(){
+
+const {data,error} =
+await db
+.from("orders")
+.select("*")
+.order("created_at",
+{ascending:false});
+
+
+if(error){
+
+$("orders").textContent =
+error.message;
+
+return;
+
+}
+
+
+$("orders").innerHTML =
+(data || []).map(o => `
+
+<div class="item">
+
+<b>
+${esc(o.customer_name)}
+</b>
+
+—
+₹${Number(o.total).toFixed(2)}
+
+<br>
+
+Phone:
+${esc(o.phone)}
+
+<br>
+
+Address:
+${esc(o.address)}
+
+<br>
+
+Status:
+<b>
+${esc(o.status)}
+</b>
+
+<br>
+
+<button
+onclick="setStatus('${o.id}','Confirmed')"
+>
+Confirm
+</button>
+
+<button
+onclick="setStatus('${o.id}','Shipped')"
+>
+Shipped
+</button>
+
+<button
+onclick="setStatus('${o.id}','Delivered')"
+>
+Delivered
+</button>
+
+</div>
+
+`).join("")
+||
+"<p>No orders yet.</p>";
+
+}
+
+
+async function setStatus(id,status){
+
+const {error} =
+await db
+.from("orders")
+.update({status:status})
+.eq("id",id);
+
+
+if(error){
+
+alert(error.message);
+
+}
+
+
+loadOrders();
+
+}
+
+
+checkLogin();
+
+</script>
+
+</body>
+</html>

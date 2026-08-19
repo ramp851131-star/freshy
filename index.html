@@ -4,83 +4,765 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Freshy</title>
+
 <style>
-*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#f6f7f8;color:#172018}
-header{height:62px;background:#fff;border-bottom:1px solid #ddd;display:flex;align-items:center;justify-content:space-between;padding:0 18px;position:sticky;top:0;z-index:5}
-.brand{font-size:24px;font-weight:800}.admin-link{color:#555;text-decoration:none;font-size:14px}
-main{max-width:1000px;margin:auto;padding:20px}.hero,.panel,.card{background:#fff;border-radius:16px;padding:16px;box-shadow:0 2px 10px #0000000d}
-.hero{padding:28px;margin-bottom:25px}.hero h1{margin:0 0 6px;font-size:34px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:16px}
-.card img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:12px}.card h3{margin:10px 0 5px}.card p{color:#666}.card strong{display:block;font-size:20px;margin:10px 0}
-button{border:1px solid #ccc;background:#fff;border-radius:8px;padding:8px 10px;cursor:pointer}.primary{background:#111;color:#fff;border:0;border-radius:10px;padding:11px 15px;font-weight:700;cursor:pointer;width:100%}
-.cart-btn{position:fixed;right:18px;bottom:18px;background:#111;color:#fff;border:0;border-radius:30px;padding:13px 18px;z-index:10}
-.cart{position:fixed;right:-380px;top:0;width:min(360px,92vw);height:100vh;background:#fff;z-index:20;padding:18px;box-shadow:-5px 0 20px #0002;transition:.2s}.cart.open{right:0}
-.cart-head,.row{display:flex;justify-content:space-between;align-items:center}.cart-item{display:flex;justify-content:space-between;gap:10px;padding:12px 0;border-bottom:1px solid #eee}.total{font-size:20px;font-weight:800;margin:20px 0}
-.modal{display:none;position:fixed;inset:0;background:#0008;z-index:30;align-items:center;justify-content:center;padding:18px}.modal.show{display:flex}.modal-box{background:#fff;border-radius:16px;padding:20px;width:min(450px,100%);position:relative}.close{position:absolute;right:12px;top:12px}
-input,textarea{width:100%;padding:12px;border:1px solid #ccc;border-radius:9px;margin:6px 0;font:inherit}textarea{min-height:90px}.product-form{display:grid;gap:5px;margin-bottom:20px}
-.admin-item,.order{border:1px solid #eee;border-radius:10px;padding:12px;margin:8px 0}.order{line-height:1.6}.panel{margin-bottom:20px}.admin-page{display:none}
-@media(max-width:500px){main{padding:12px}.grid{grid-template-columns:1fr 1fr}.card{padding:10px}.card h3{font-size:16px}.card strong{font-size:17px}}
+*{box-sizing:border-box}
+
+body{
+margin:0;
+font-family:Arial,sans-serif;
+background:#f6f7f8;
+color:#172018
+}
+
+header{
+height:62px;
+background:#fff;
+border-bottom:1px solid #ddd;
+display:flex;
+align-items:center;
+padding:0 18px;
+position:sticky;
+top:0;
+z-index:5
+}
+
+.brand{
+font-size:25px;
+font-weight:800
+}
+
+main{
+max-width:1000px;
+margin:auto;
+padding:20px
+}
+
+.hero{
+background:#fff;
+border-radius:16px;
+padding:28px;
+margin-bottom:25px;
+box-shadow:0 2px 10px #0000000d
+}
+
+.hero h1{
+margin:0 0 6px;
+font-size:34px
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(190px,1fr));
+gap:16px
+}
+
+.card{
+background:#fff;
+border-radius:16px;
+padding:12px;
+box-shadow:0 2px 10px #0000000d
+}
+
+.card img{
+width:100%;
+aspect-ratio:4/3;
+object-fit:cover;
+border-radius:12px
+}
+
+.card h3{
+margin:10px 0 5px
+}
+
+.card p{
+color:#666
+}
+
+.card strong{
+display:block;
+font-size:20px;
+margin:10px 0
+}
+
+button{
+border:1px solid #ccc;
+background:#fff;
+border-radius:8px;
+padding:8px 10px;
+cursor:pointer
+}
+
+.primary{
+background:#111;
+color:#fff;
+border:0;
+border-radius:10px;
+padding:11px 15px;
+font-weight:700;
+cursor:pointer;
+width:100%
+}
+
+.cart-btn{
+position:fixed;
+right:18px;
+bottom:18px;
+background:#111;
+color:#fff;
+border:0;
+border-radius:30px;
+padding:13px 18px;
+z-index:10
+}
+
+.cart{
+position:fixed;
+right:-380px;
+top:0;
+width:min(360px,92vw);
+height:100vh;
+background:#fff;
+z-index:20;
+padding:18px;
+box-shadow:-5px 0 20px #0002;
+transition:.2s
+}
+
+.cart.open{
+right:0
+}
+
+.cart-head{
+display:flex;
+justify-content:space-between;
+align-items:center
+}
+
+.cart-item{
+display:flex;
+justify-content:space-between;
+gap:10px;
+padding:12px 0;
+border-bottom:1px solid #eee
+}
+
+.total{
+font-size:20px;
+font-weight:800;
+margin:20px 0
+}
+
+.modal{
+display:none;
+position:fixed;
+inset:0;
+background:#0008;
+z-index:30;
+align-items:center;
+justify-content:center;
+padding:18px
+}
+
+.modal.show{
+display:flex
+}
+
+.modal-box{
+background:#fff;
+border-radius:16px;
+padding:20px;
+width:min(450px,100%);
+position:relative
+}
+
+.close{
+position:absolute;
+right:12px;
+top:12px
+}
+
+input,
+textarea{
+width:100%;
+padding:12px;
+border:1px solid #ccc;
+border-radius:9px;
+margin:6px 0;
+font:inherit
+}
+
+textarea{
+min-height:90px
+}
+
+@media(max-width:500px){
+
+main{
+padding:12px
+}
+
+.grid{
+grid-template-columns:1fr 1fr
+}
+
+.card{
+padding:10px
+}
+
+.card h3{
+font-size:16px
+}
+
+.card strong{
+font-size:17px
+}
+
+}
 </style>
 </head>
-<body>
-<header><div class="brand">Freshy</div><a href="#" class="admin-link" id="adminLink">Admin</a></header>
 
-<main id="store">
-<section class="hero"><h1>Freshy</h1><p>Simple shopping with Cash on Delivery.</p></section>
-<h2>Products</h2><div id="products" class="grid"></div>
+<body>
+
+<header>
+<div class="brand">Freshy</div>
+</header>
+
+
+<main>
+
+<section class="hero">
+
+<h1>Freshy</h1>
+
+<p>
+Simple shopping with Cash on Delivery.
+</p>
+
+</section>
+
+
+<h2>Products</h2>
+
+<div id="products" class="grid"></div>
+
 </main>
 
+
+<!-- CART -->
+
 <div id="cart" class="cart">
-<div class="cart-head"><b>Your Cart</b><button onclick="toggleCart()">Ã—</button></div>
-<div id="cartItems"></div><div class="total">Total: â‚¹<span id="total">0</span></div>
-<button class="primary" onclick="openCheckout()">Checkout â€” COD</button>
+
+<div class="cart-head">
+
+<b>Your Cart</b>
+
+<button onclick="toggleCart()">
+×
+</button>
+
 </div>
-<button class="cart-btn" id="cartBtn" onclick="toggleCart()">ðŸ›’ Cart <span id="count">0</span></button>
 
-<div id="checkout" class="modal"><div class="modal-box">
-<button class="close" onclick="closeCheckout()">Ã—</button><h2>Cash on Delivery</h2>
-<form id="orderForm"><input id="customerName" placeholder="Your name" required><input id="phone" placeholder="Phone number" required><textarea id="address" placeholder="Full delivery address" required></textarea><button class="primary">Place COD Order</button></form><p id="orderMsg"></p>
-</div></div>
 
-<main id="admin" class="admin-page">
-<div id="loginBox" class="panel"><h2>Admin Login</h2><form id="loginForm"><input id="email" type="email" placeholder="Admin email" required><input id="password" type="password" placeholder="Password" required><button class="primary">Login</button></form><p id="loginMsg"></p></div>
-<div id="adminApp" hidden>
-<div class="panel"><div class="row"><h2>Products</h2><button onclick="logout()">Logout</button></div>
-<form id="productForm" class="product-form"><input id="pname" placeholder="Product name" required><input id="pprice" type="number" step="0.01" placeholder="Price â‚¹" required><input id="pimage" placeholder="Image URL (optional)"><textarea id="pdesc" placeholder="Description"></textarea><button class="primary">Add Product</button></form>
-<div id="productAdmin"></div></div>
-<div class="panel"><h2>Orders</h2><div id="orders"></div></div>
-</div></main>
+<div id="cartItems"></div>
+
+
+<div class="total">
+
+Total: ₹<span id="total">0</span>
+
+</div>
+
+
+<button
+class="primary"
+onclick="openCheckout()"
+>
+Checkout — COD
+</button>
+
+</div>
+
+
+<button
+class="cart-btn"
+onclick="toggleCart()"
+>
+
+🛒 Cart
+
+<span id="count">0</span>
+
+</button>
+
+
+<!-- CHECKOUT -->
+
+<div id="checkout" class="modal">
+
+<div class="modal-box">
+
+<button
+class="close"
+onclick="closeCheckout()"
+>
+×
+</button>
+
+
+<h2>
+Cash on Delivery
+</h2>
+
+
+<form id="orderForm">
+
+<input
+id="customerName"
+placeholder="Your name"
+required
+>
+
+
+<input
+id="phone"
+placeholder="Phone number"
+required
+>
+
+
+<textarea
+id="address"
+placeholder="Full delivery address"
+required
+></textarea>
+
+
+<button
+class="primary"
+type="submit"
+>
+Place COD Order
+</button>
+
+</form>
+
+
+<p id="orderMsg"></p>
+
+</div>
+
+</div>
+
+
+<!-- SUPABASE -->
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-const SUPABASE_URL="https://jleeiaktplcsjpgmzopm.supabase.co";
-const SUPABASE_KEY="sb_publishable_XGiJfYclvwJALSxtb-knpQ_QfUasbhv";
-const db=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
-let products=[],cart=JSON.parse(localStorage.getItem("freshyCart")||"[]"),editing=null;
-const $=id=>document.getElementById(id);
-const esc=s=>String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
-function save(){localStorage.setItem("freshyCart",JSON.stringify(cart))}
-function renderCart(){$("count").textContent=cart.reduce((a,x)=>a+x.qty,0);$("total").textContent=cart.reduce((a,x)=>a+x.qty*x.price,0).toFixed(2);$("cartItems").innerHTML=cart.map((x,i)=>`<div class="cart-item"><span>${esc(x.name)}<br>â‚¹${x.price} Ã— ${x.qty}</span><span><button onclick="changeQty(${i},-1)">âˆ’</button><button onclick="changeQty(${i},1)">+</button></span></div>`).join("")||"<p>Your cart is empty.</p>"}
-function changeQty(i,d){cart[i].qty+=d;if(cart[i].qty<=0)cart.splice(i,1);save();renderCart()}
-function toggleCart(force){$("cart").classList.toggle("open",force===true?true:undefined)}
-function addToCart(id){let p=products.find(x=>x.id===id),x=cart.find(x=>x.id===id);if(!p)return;x?x.qty++:cart.push({id:p.id,name:p.name,price:+p.price,qty:1});save();renderCart();toggleCart(true)}
-async function loadProducts(){let r=await db.from("products").select("*").eq("active",true).order("created_at",{ascending:false});if(r.error){$("products").textContent=r.error.message;return}products=r.data||[];$("products").innerHTML=products.map(p=>`<article class="card"><img src="${p.image_url||"https://placehold.co/600x400?text=Freshy"}"><h3>${esc(p.name)}</h3><p>${esc(p.description||"")}</p><strong>â‚¹${(+p.price).toFixed(2)}</strong><button class="primary" onclick="addToCart('${p.id}')">Add to Cart</button></article>`).join("")||"<p>No products yet.</p>"}
-function openCheckout(){if(!cart.length)return alert("Add a product first.");$("checkout").classList.add("show")}
-function closeCheckout(){$("checkout").classList.remove("show")}
-$("orderForm").onsubmit=async e=>{e.preventDefault();let total=cart.reduce((a,x)=>a+x.qty*x.price,0);let r=await db.from("orders").insert({customer_name:$("customerName").value.trim(),phone:$("phone").value.trim(),address:$("address").value.trim(),items:cart,total,status:"Pending"});$("orderMsg").textContent=r.error?"Could not place order: "+r.error.message:"Order placed successfully! We will contact you for delivery.";if(!r.error){cart=[];save();renderCart();e.target.reset()}};
 
-$("adminLink").onclick=async e=>{e.preventDefault();$("store").style.display="none";$("cartBtn").style.display="none";$("cart").classList.remove("open");$("admin").style.display="block";let s=await db.auth.getSession();s.data.session?showAdmin():showLogin()}
-function showLogin(){$("loginBox").hidden=false;$("adminApp").hidden=true}
-function showAdmin(){$("loginBox").hidden=true;$("adminApp").hidden=false;loadAdminProducts();loadOrders()}
-$("loginForm").onsubmit=async e=>{e.preventDefault();let r=await db.auth.signInWithPassword({email:$("email").value,password:$("password").value});$("loginMsg").textContent=r.error?r.error.message:"";if(!r.error)showAdmin()}
-async function logout(){await db.auth.signOut();showLogin()}
-async function loadAdminProducts(){let r=await db.from("products").select("*").order("created_at",{ascending:false});$("productAdmin").innerHTML=r.error?r.error.message:(r.data||[]).map(p=>`<div class="admin-item"><b>${esc(p.name)}</b> â€” â‚¹${(+p.price).toFixed(2)}<br><small>${p.active?"Visible":"Hidden"}</small><br><button onclick="toggleProduct('${p.id}',${!p.active})">${p.active?"Hide":"Show"}</button> <button onclick='editProduct(${JSON.stringify(p)})'>Edit</button> <button onclick="deleteProduct('${p.id}')">Delete</button></div>`).join("")||"<p>No products.</p>"}
-$("productForm").onsubmit=async e=>{e.preventDefault();let row={name:$("pname").value.trim(),price:+$("pprice").value,image_url:$("pimage").value.trim()||null,description:$("pdesc").value.trim()};let r=editing?await db.from("products").update(row).eq("id",editing):await db.from("products").insert(row);if(r.error)alert(r.error.message);else{editing=null;e.target.reset();e.target.querySelector("button").textContent="Add Product";loadAdminProducts();loadProducts()}}
-function editProduct(p){editing=p.id;$("pname").value=p.name;$("pprice").value=p.price;$("pimage").value=p.image_url||"";$("pdesc").value=p.description||"";$("productForm").querySelector("button").textContent="Save Changes"}
-async function toggleProduct(id,v){await db.from("products").update({active:v}).eq("id",id);loadAdminProducts();loadProducts()}
-async function deleteProduct(id){if(confirm("Delete this product?")){await db.from("products").delete().eq("id",id);loadAdminProducts()}}
-async function loadOrders(){let r=await db.from("orders").select("*").order("created_at",{ascending:false});$("orders").innerHTML=r.error?r.error.message:(r.data||[]).map(o=>`<div class="order"><b>${esc(o.customer_name)}</b> â€” â‚¹${(+o.total).toFixed(2)}<br>ðŸ“ž ${esc(o.phone)}<br>ðŸ“ ${esc(o.address)}<br><small>${new Date(o.created_at).toLocaleString()} Â· ${esc(o.status)}</small><br><button onclick="setStatus('${o.id}','Confirmed')">Confirm</button> <button onclick="setStatus('${o.id}','Shipped')">Shipped</button> <button onclick="setStatus('${o.id}','Delivered')">Delivered</button></div>`).join("")||"<p>No orders.</p>"}
-async function setStatus(id,status){await db.from("orders").update({status}).eq("id",id);loadOrders()}
-renderCart();loadProducts();
+
+<script>
+
+const SUPABASE_URL =
+"https://jleeiaktplcsjpgmzopm.supabase.co";
+
+
+const SUPABASE_PUBLISHABLE_KEY =
+"sb_publishable_XGiJfYclvwJALSxtb-knpQ_QfUasbhv";
+
+
+const db =
+supabase.createClient(
+SUPABASE_URL,
+SUPABASE_PUBLISHABLE_KEY
+);
+
+
+let products = [];
+
+let cart =
+JSON.parse(
+localStorage.getItem("freshyCart") || "[]"
+);
+
+
+function escapeHTML(value){
+
+return String(value ?? "")
+.replace(/[&<>"']/g,function(m){
+
+return {
+
+"&":"&amp;",
+"<":"&lt;",
+">":"&gt;",
+'"':"&quot;",
+"'":"&#039;"
+
+}[m];
+
+});
+
+}
+
+
+function saveCart(){
+
+localStorage.setItem(
+"freshyCart",
+JSON.stringify(cart)
+);
+
+}
+
+
+function renderCart(){
+
+document.getElementById("count").textContent =
+cart.reduce(
+(total,item) =>
+total + item.qty,
+0
+);
+
+
+document.getElementById("total").textContent =
+cart.reduce(
+(total,item) =>
+total + item.qty * item.price,
+0
+).toFixed(2);
+
+
+document.getElementById("cartItems").innerHTML =
+
+cart.map(function(item,index){
+
+return `
+
+<div class="cart-item">
+
+<span>
+
+${escapeHTML(item.name)}
+
+<br>
+
+₹${item.price} × ${item.qty}
+
+</span>
+
+<span>
+
+<button
+onclick="changeQty(${index},-1)"
+>
+−
+</button>
+
+<button
+onclick="changeQty(${index},1)"
+>
++
+</button>
+
+</span>
+
+</div>
+
+`;
+
+}).join("")
+
+||
+
+"<p>Your cart is empty.</p>";
+
+}
+
+
+function changeQty(index,difference){
+
+cart[index].qty += difference;
+
+
+if(cart[index].qty <= 0){
+
+cart.splice(index,1);
+
+}
+
+
+saveCart();
+
+renderCart();
+
+}
+
+
+function toggleCart(force){
+
+document
+.getElementById("cart")
+.classList
+.toggle(
+"open",
+force === true
+? true
+: undefined
+);
+
+}
+
+
+function addToCart(id){
+
+const product =
+products.find(
+item => item.id === id
+);
+
+
+if(!product){
+
+return;
+
+}
+
+
+const existing =
+cart.find(
+item => item.id === id
+);
+
+
+if(existing){
+
+existing.qty++;
+
+}else{
+
+cart.push({
+
+id:product.id,
+
+name:product.name,
+
+price:Number(product.price),
+
+qty:1
+
+});
+
+}
+
+
+saveCart();
+
+renderCart();
+
+toggleCart(true);
+
+}
+
+
+async function loadProducts(){
+
+const result =
+await db
+.from("products")
+.select("*")
+.eq("active",true)
+.order(
+"created_at",
+{
+ascending:false
+}
+);
+
+
+if(result.error){
+
+document.getElementById(
+"products"
+).textContent =
+result.error.message;
+
+return;
+
+}
+
+
+products =
+result.data || [];
+
+
+document.getElementById(
+"products"
+).innerHTML =
+
+products.map(function(product){
+
+return `
+
+<article class="card">
+
+<img
+src="${
+product.image_url ||
+"https://placehold.co/600x400?text=Freshy"
+}"
+alt=""
+>
+
+<h3>
+${escapeHTML(product.name)}
+</h3>
+
+<p>
+${escapeHTML(
+product.description || ""
+)}
+</p>
+
+<strong>
+₹${Number(product.price).toFixed(2)}
+</strong>
+
+<button
+class="primary"
+onclick="addToCart('${product.id}')"
+>
+Add to Cart
+</button>
+
+</article>
+
+`;
+
+}).join("")
+
+||
+
+"<p>No products available.</p>";
+
+}
+
+
+function openCheckout(){
+
+if(!cart.length){
+
+alert(
+"Please add a product to your cart first."
+);
+
+return;
+
+}
+
+
+document
+.getElementById("checkout")
+.classList
+.add("show");
+
+}
+
+
+function closeCheckout(){
+
+document
+.getElementById("checkout")
+.classList
+.remove("show");
+
+}
+
+
+document
+.getElementById("orderForm")
+.addEventListener(
+"submit",
+async function(event){
+
+event.preventDefault();
+
+
+const total =
+cart.reduce(
+(sum,item) =>
+sum + item.qty * item.price,
+0
+);
+
+
+const order = {
+
+customer_name:
+document.getElementById(
+"customerName"
+).value.trim(),
+
+phone:
+document.getElementById(
+"phone"
+).value.trim(),
+
+address:
+document.getElementById(
+"address"
+).value.trim(),
+
+items:cart,
+
+total:total,
+
+status:"Pending"
+
+};
+
+
+const result =
+await db
+.from("orders")
+.insert(order);
+
+
+if(result.error){
+
+document.getElementById(
+"orderMsg"
+).textContent =
+"Order failed: " +
+result.error.message;
+
+return;
+
+}
+
+
+document.getElementById(
+"orderMsg"
+).textContent =
+"Order placed successfully!";
+
+
+cart = [];
+
+saveCart();
+
+renderCart();
+
+event.target.reset();
+
+});
+
+
+renderCart();
+
+loadProducts();
+
 </script>
+
 </body>
 </html>
